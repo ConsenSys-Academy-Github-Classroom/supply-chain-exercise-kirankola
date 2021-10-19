@@ -9,19 +9,23 @@ const contractDefn = ca =>
 const items = (ca) => {
   const item = contractDefn(ca).nodes.find((n) => n.name === "Item");
   if (!item) return null;
-
+ 
   return item
     .members
-    .map((t) => ({
+    .map((t) => (
+      {
       name: t.name,
       nodeType: t.nodeType,
       stateVariable: t.stateVariable,
-      type: t.typeName.name,
+      type:t.typeName.nodeType !=="UserDefinedTypeName" ? t.typeName.name : t.typeName.pathNode.name  , //updated to fix state Typename//original code type: t.typeName.name,
       mutability: t.typeName.stateMutability,
     }));
 };
 
 const isDefined = members => variableName => {
+  
+ 
+   
   return members 
     ? members.find((item) => item.name === variableName) 
     : null;
